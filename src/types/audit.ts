@@ -21,6 +21,8 @@ export interface AuditResult {
     accessibility: number;
     contrast: number;
     typography: number;
+    performance: number;
+    seo: number;
     overall: number;
   };
   suggestions: IssueSuggestion[];

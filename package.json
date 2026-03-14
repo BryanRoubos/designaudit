@@ -11,6 +11,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",
     "axe-core": "^4.11.1",
+    "lighthouse": "^13.0.3",
     "next": "16.1.6",
     "postcss": "^8.5.8",
     "puppeteer": "^24.39.1",

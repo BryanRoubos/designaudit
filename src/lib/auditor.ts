@@ -2,6 +2,7 @@ import { AuditResult } from "@/types/audit";
 import puppeteer from "puppeteer";
 import { readFileSync } from "fs";
 import { resolve } from "path";
+import lighthouse from "lighthouse";
 
 export async function audit(url: string): Promise<AuditResult> {
   const browser = await puppeteer.launch({
@@ -68,8 +69,27 @@ export async function audit(url: string): Promise<AuditResult> {
       ).length ?? 0;
     const typographyScore = Math.round(Math.max(0, 100 - typographyCount * 5));
 
+    // lighthouse
+    const port = new URL(browser.wsEndpoint()).port;
+    const lighthouseResults = await lighthouse(url, {
+      port: parseInt(port),
+      output: "json",
+      onlyCategories: ["performance", "seo"],
+      logLevel: "error",
+    });
+
+    const lhr = lighthouseResults?.lhr;
+    const performanceScore = Math.round(
+      (lhr?.categories?.performance?.score ?? 0) * 100,
+    );
+    const seoScore = Math.round((lhr?.categories?.seo?.score ?? 0) * 100);
+
     const overall = Math.round(
-      accessibilityScore * 0.5 + contrastScore * 0.3 + typographyScore * 0.2,
+      accessibilityScore * 0.4 +
+        contrastScore * 0.2 +
+        typographyScore * 0.1 +
+        performanceScore * 0.2 +
+        seoScore * 0.1,
     );
 
     return {
@@ -80,6 +100,8 @@ export async function audit(url: string): Promise<AuditResult> {
         accessibility: accessibilityScore,
         contrast: contrastScore,
         typography: typographyScore,
+        performance: performanceScore,
+        seo: seoScore,
         overall: overall,
       },
       summary: "",
