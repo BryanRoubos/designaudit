@@ -7,6 +7,12 @@ export interface Issue {
   element: string;
 }
 
+export interface IssueSuggestion {
+  rule: string;
+  element: string;
+  suggestion: string;
+}
+
 export interface AuditResult {
   url: string;
   screenshot: string;
@@ -17,5 +23,6 @@ export interface AuditResult {
     typography: number;
     overall: number;
   };
+  suggestions: IssueSuggestion[];
   summary: string;
 }
