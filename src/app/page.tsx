@@ -11,6 +11,45 @@ export default function Home() {
   const router = useRouter();
   const [values, setValues] = useState(initialValues);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!values.url) {
+      setError("Please enter a URL");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/audit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error);
+        return;
+      }
+      if (!data.id) {
+        setError("Something went wrong. Please try again.");
+        return;
+      }
+
+      router.push(`/results/${data.id}`);
+    } catch (error) {
+      console.error(error);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,23 +57,6 @@ export default function Home() {
       ...values,
       [name]: value,
     });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const response = await fetch("/api/audit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
-    const data = await response.json();
-    router.push(`/results/${data.id}`);
-
-    setLoading(false);
   };
 
   return (
@@ -52,7 +74,10 @@ export default function Home() {
             placeholder="Enter URL"
             onChange={handleInputChange}
           />
-          <button type="submit">Submit</button>
+          {error && <p>{error}</p>}
+          <button type="submit" disabled={loading}>
+            {loading ? "Scanning..." : "Scan"}
+          </button>
         </form>
       </section>
     </main>

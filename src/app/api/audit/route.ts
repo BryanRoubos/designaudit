@@ -14,9 +14,17 @@ export const UrlSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  let body;
   try {
-    const body = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Please enter a valid URL" },
+      { status: 400 },
+    );
+  }
 
+  try {
     // Validate the URL using the schema
     const { url } = UrlSchema.parse(body);
 
@@ -40,8 +48,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ...result, id: data.id });
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.log(error); // add this
       return NextResponse.json(
-        { error: error.errors[0].message },
+        { error: error.issues[0].message },
         { status: 400 },
       );
     }
