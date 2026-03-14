@@ -12,6 +12,15 @@ export default function Home() {
   const [values, setValues] = useState(initialValues);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [step, setStep] = useState(0);
+
+  const steps = [
+    "Opening the page...",
+    "Running accessibility checks...",
+    "Analysing contrast and typography...",
+    "Running performance analysis...",
+    "Generating fix suggestions...",
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +31,13 @@ export default function Home() {
     }
 
     setLoading(true);
+    setStep(0);
+    let interval: ReturnType<typeof setInterval>;
+
     try {
+      interval = setInterval(() => {
+        setStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev));
+      }, 5000);
       const response = await fetch("/api/audit", {
         method: "POST",
         headers: {
@@ -48,6 +63,9 @@ export default function Home() {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
+      clearInterval(interval);
+      setLoading(false);
+      setStep(0);
     }
   };
 
@@ -82,13 +100,26 @@ export default function Home() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-zinc-900 text-white px-5 py-3 rounded-lg text-sm font-medium hover:bg-zinc-700 disabled:opacity-50 transition-colors"
+            className="bg-zinc-900 text-white px-5 py-3 rounded-lg text-sm font-medium hover:bg-zinc-700 disabled:opacity-50 transition-colors whitespace-nowrap"
           >
             {loading ? "Scanning..." : "Scan"}
           </button>
         </form>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {loading && (
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <div className="w-full bg-gray-200 rounded-full h-1.5">
+              <div
+                className="bg-zinc-900 h-1.5 rounded-full transition-all duration-1000"
+                style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+              />
+            </div>
+            <p className="text-sm text-zinc-500">{steps[step]}</p>
+          </div>
+        )}
+        {!loading && error && (
+          <p className="text-red-500 text-sm mt-3">{error}</p>
+        )}
 
         <p className="text-xs text-zinc-400 mt-4">
           Checks accessibility · performance · contrast · typography · SEO
