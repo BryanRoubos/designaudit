@@ -64,7 +64,7 @@ export default function Home() {
       <header className="flex items-center justify-center mb-8">
         <h1 className="text-3xl font-bold underline">Design Audit</h1>
       </header>
-      <section>
+      <section className="">
         <h1 className="text-xl mb-4">Put in your URL</h1>
         <p className="text-l">Description of what and why and how</p>
         <form onSubmit={handleSubmit}>
@@ -74,10 +74,10 @@ export default function Home() {
             placeholder="Enter URL"
             onChange={handleInputChange}
           />
-          {error && <p>{error}</p>}
           <button type="submit" disabled={loading}>
             {loading ? "Scanning..." : "Scan"}
           </button>
+          {error && <p className="text-red-500 text-sm h-5 mb-2">{error}</p>}
         </form>
       </section>
     </main>
