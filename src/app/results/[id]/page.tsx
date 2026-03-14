@@ -26,9 +26,18 @@ export default async function ResultsPage({
       <p className="text-zinc-500 mb-8">{audit.url}</p>
 
       <div className="grid grid-cols-4 gap-4 mb-12">
-        {Object.entries(audit.scores).map(([key, value]) => (
+        {(
+          [
+            "overall",
+            "accessibility",
+            "contrast",
+            "performance",
+            "seo",
+            "typography",
+          ] as const
+        ).map((key) => (
           <div key={key} className="border rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold">{value}</div>
+            <div className="text-3xl font-bold">{audit.scores[key]}</div>
             <div className="text-sm text-zinc-500 capitalize">{key}</div>
           </div>
         ))}
