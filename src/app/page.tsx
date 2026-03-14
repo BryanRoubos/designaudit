@@ -60,25 +60,39 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center">
-      <header className="flex items-center justify-center mb-8">
-        <h1 className="text-3xl font-bold underline">Design Audit</h1>
-      </header>
-      <section className="">
-        <h1 className="text-xl mb-4">Put in your URL</h1>
-        <p className="text-l">Description of what and why and how</p>
-        <form onSubmit={handleSubmit}>
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <section className="max-w-xl mx-auto text-center">
+        <h1 className="text-5xl font-bold text-zinc-900 mb-3 leading-tight">
+          Is your website losing users?
+        </h1>
+        <p className="text-zinc-500 mb-8 text-base leading-relaxed">
+          Scan any URL for accessibility failures, performance issues, and SEO
+          gaps. Get a scored report with plain-English fixes in under 30
+          seconds.
+        </p>
+
+        <form onSubmit={handleSubmit} className="flex gap-2 mb-3">
           <input
             name="url"
             type="text"
-            placeholder="Enter URL"
+            placeholder="https://yourwebsite.com"
             onChange={handleInputChange}
+            className="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-sm text-zinc-800 placeholder-zinc-400 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-zinc-300"
           />
-          <button type="submit" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-zinc-900 text-white px-5 py-3 rounded-lg text-sm font-medium hover:bg-zinc-700 disabled:opacity-50 transition-colors"
+          >
             {loading ? "Scanning..." : "Scan"}
           </button>
-          {error && <p className="text-red-500 text-sm h-5 mb-2">{error}</p>}
         </form>
+
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+
+        <p className="text-xs text-zinc-400 mt-4">
+          Checks accessibility · performance · contrast · typography · SEO
+        </p>
       </section>
     </main>
   );
