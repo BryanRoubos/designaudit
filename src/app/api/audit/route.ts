@@ -1,5 +1,6 @@
 import { audit } from "@/lib/auditor";
 import { NextRequest, NextResponse } from "next/server";
+import { analyzeIssues } from "@/lib/gemini";
 import * as z from "zod";
 
 export const UrlSchema = z.object({
@@ -20,6 +21,10 @@ export async function POST(req: NextRequest) {
 
     // Perform the audit
     const result = await audit(url);
+
+    // Analyze issues with Gemini
+    const suggestions = await analyzeIssues(result.issues);
+    result.suggestions = suggestions;
 
     // Return the result
     return NextResponse.json(result);
