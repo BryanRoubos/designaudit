@@ -1,6 +1,7 @@
 import { audit } from "@/lib/auditor";
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeIssues } from "@/lib/gemini";
+import { supabase } from "@/lib/supabase";
 import * as z from "zod";
 
 export const UrlSchema = z.object({
@@ -26,8 +27,17 @@ export async function POST(req: NextRequest) {
     const suggestions = await analyzeIssues(result.issues);
     result.suggestions = suggestions;
 
+    // Save the result to Supabase
+    const { data, error } = await supabase
+      .from("audits")
+      .insert([result])
+      .select()
+      .single();
+
+    if (error) throw new Error(error.message);
+
     // Return the result
-    return NextResponse.json(result);
+    return NextResponse.json({ ...result, id: data.id });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
