@@ -1,5 +1,5 @@
 import { LoadingBar } from "@/components/loadingbar";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { AuditResult } from "@/types/audit";
 export const dynamic = "force-dynamic";
 
@@ -10,7 +10,7 @@ export default async function ResultsPage({
 }) {
   const { id } = await params;
 
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("audits")
     .select("*")
     .eq("id", id)

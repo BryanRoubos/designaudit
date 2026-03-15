@@ -1,7 +1,7 @@
 import { audit } from "@/lib/auditor";
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeIssues } from "@/lib/gemini";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import * as z from "zod";
 
 export const UrlSchema = z.object({
@@ -25,18 +25,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Validate the URL using the schema
     const { url } = UrlSchema.parse(body);
 
-    // Perform the audit
     const result = await audit(url);
 
-    // Analyze issues with Gemini
     const suggestions = await analyzeIssues(result.issues);
     result.suggestions = suggestions;
 
-    // Save the result to Supabase
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("audits")
       .insert([result])
       .select()
@@ -44,11 +40,10 @@ export async function POST(req: NextRequest) {
 
     if (error) throw new Error(error.message);
 
-    // Return the result
     return NextResponse.json({ ...result, id: data.id });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.log(error); // add this
+      console.log(error);
       return NextResponse.json(
         { error: error.issues[0].message },
         { status: 400 },
