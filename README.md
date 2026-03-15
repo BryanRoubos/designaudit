@@ -8,7 +8,7 @@ Paste in a URL. Get scores, a screenshot, and plain-English fixes you can actual
 
 ## Why I built this
 
-I run [websneller.nl](https://www.websneller.nl), a web audit and fix service. The core challenge: how do you quickly show a potential client that their site has real problems worth fixing?
+I used to run [websneller.nl](https://www.websneller.nl), a web audit and fix service. The core challenge: how do you quickly show a potential client that their site has real problems worth fixing?
 
 I needed a tool that could:
 - Generate **my own scores** across accessibility, performance, and SEO
