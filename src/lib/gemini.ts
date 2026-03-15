@@ -5,17 +5,15 @@ export async function analyzeIssues(
 ): Promise<IssueSuggestion[]> {
   if (issues.length === 0) return [];
 
-  const prompt = `You are a web performance and accessibility expert.
-  You will receive a list of issues found on a website. These may be accessibility violations, performance problems, or SEO issues.
-  For each issue, write a plain-English explanation for a semi-technical audience (a web developer or business owner).
-  Explain: what the problem is, why it matters, and how to fix it.
-  Keep each suggestion to 2-3 sentences maximum.
+  const prompt = `You are a web accessibility and performance expert.
+  For each numbered issue below, write exactly one plain-English suggestion (2-3 sentences max).
+  You MUST return exactly ${issues.length} objects in the JSON array, one per issue, in the same order.
 
   Issues:
   ${issues.map((i, idx) => `${idx + 1}. Rule: ${i.rule} | Element: ${i.element} | Detail: ${i.detail}`).join("\n")}
 
-  Return ONLY a valid JSON array, no markdown, no explanation:
-  [{"rule":"...","element":"...","suggestion":"..."}]`;
+  Return ONLY a valid JSON array with exactly ${issues.length} objects, no markdown:
+  [{"index":1,"rule":"...","suggestion":"..."}]`;
 
   try {
     const response = await fetch(
