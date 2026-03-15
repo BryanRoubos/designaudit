@@ -80,7 +80,7 @@ export default async function ResultsPage({
         <div className="flex flex-col gap-4">
           {audit.issues.map((issue, i) => {
             const suggestion = audit.suggestions.find(
-              (s) => s.rule === issue.rule,
+              (s) => s.rule === issue.rule && s.element === issue.element,
             );
             const borderColor =
               issue.severity === "critical"
