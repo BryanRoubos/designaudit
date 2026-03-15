@@ -7,6 +7,11 @@ import lighthouse from "lighthouse";
 export async function audit(url: string): Promise<AuditResult> {
   const browser = await puppeteer.launch({
     headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+    ],
   });
 
   try {
