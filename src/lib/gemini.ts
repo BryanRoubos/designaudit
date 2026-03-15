@@ -5,16 +5,16 @@ export async function analyzeIssues(
 ): Promise<IssueSuggestion[]> {
   if (issues.length === 0) return [];
 
-  const prompt = `You are a web accessibility researcher.
-  You will receive a list of accessibility issues found on a website.
-  Translate each issue into plain English for a semi-technical audience.
-  For each issue explain: what the problem is, why it matters, and how to fix it.
+  const prompt = `You are a web performance and accessibility expert.
+  You will receive a list of issues found on a website. These may be accessibility violations, performance problems, or SEO issues.
+  For each issue, write a plain-English explanation for a semi-technical audience (a web developer or business owner).
+  Explain: what the problem is, why it matters, and how to fix it.
   Keep each suggestion to 2-3 sentences maximum.
 
   Issues:
   ${issues.map((i, idx) => `${idx + 1}. Rule: ${i.rule} | Element: ${i.element} | Detail: ${i.detail}`).join("\n")}
 
-  Return ONLY a valid JSON array in this exact format, no markdown, no explanation:
+  Return ONLY a valid JSON array, no markdown, no explanation:
   [{"rule":"...","element":"...","suggestion":"..."}]`;
 
   try {

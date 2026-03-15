@@ -84,6 +84,29 @@ export async function audit(url: string): Promise<AuditResult> {
     );
     const seoScore = Math.round((lhr?.categories?.seo?.score ?? 0) * 100);
 
+    const auditRefs = [
+      ...(lhr?.categories?.performance?.auditRefs ?? []),
+      ...(lhr?.categories?.seo?.auditRefs ?? []),
+    ]
+      .filter((ref: any) => (ref.weight ?? 0) > 0)
+      .map((ref: any) => ref.id);
+
+    const axeRules = new Set(issues.map((i) => i.rule));
+
+    const lighthouseIssues = auditRefs
+      .map((id: string) => lhr?.audits?.[id])
+      .filter(
+        (audit: any) => audit && audit.score !== null && audit.score < 0.9,
+      )
+      .filter((audit: any) => !axeRules.has(audit.id))
+      .map((audit: any) => ({
+        rule: audit.id,
+        severity:
+          audit.score < 0.5 ? ("critical" as const) : ("warning" as const),
+        element: audit.displayValue ?? "",
+        detail: audit.description,
+      }));
+
     const overall = Math.round(
       accessibilityScore * 0.4 +
         contrastScore * 0.2 +
@@ -95,7 +118,7 @@ export async function audit(url: string): Promise<AuditResult> {
     return {
       url,
       screenshot,
-      issues: issues,
+      issues: [...issues, ...lighthouseIssues],
       scores: {
         accessibility: accessibilityScore,
         contrast: contrastScore,
