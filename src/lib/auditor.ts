@@ -118,7 +118,14 @@ export async function audit(url: string): Promise<AuditResult> {
     return {
       url,
       screenshot,
-      issues: [...issues, ...lighthouseIssues],
+      issues: [...issues, ...lighthouseIssues].sort((a, b) => {
+        const order: Record<string, number> = {
+          critical: 0,
+          warning: 1,
+          info: 2,
+        };
+        return order[a.severity] - order[b.severity];
+      }),
       scores: {
         accessibility: accessibilityScore,
         contrast: contrastScore,
@@ -127,6 +134,7 @@ export async function audit(url: string): Promise<AuditResult> {
         seo: seoScore,
         overall: overall,
       },
+      suggestions: [],
       summary: "",
     };
   } finally {

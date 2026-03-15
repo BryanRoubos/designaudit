@@ -79,7 +79,7 @@ export default async function ResultsPage({
         <div className="flex flex-col gap-4">
           {audit.issues.map((issue, i) => {
             const suggestion = audit.suggestions.find(
-              (s) => s.rule === issue.rule && s.element === issue.element,
+              (s) => s.rule === issue.rule,
             );
             const borderColor =
               issue.severity === "critical"
@@ -115,10 +115,12 @@ export default async function ResultsPage({
                 <p
                   className="text-sm text-zinc-700 leading-relaxed"
                   dangerouslySetInnerHTML={{
-                    __html: (suggestion?.suggestion ?? issue.detail).replace(
-                      /\[([^\]]+)\]\(([^)]+)\)/g,
-                      '<a href="$2" target="_blank" class="text-zinc-500 underline">$1</a>',
-                    ),
+                    __html: (suggestion?.suggestion ?? issue.detail)
+                      .replace(
+                        /\[([^\]]+)\]\(([^)]+)\)/g,
+                        '<a href="$2" target="_blank" class="text-zinc-500 underline">$1</a>',
+                      )
+                      .replace(/<(?!a\b|\/a)[^>]+>/gi, ""),
                   }}
                 />
               </div>
