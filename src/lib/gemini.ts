@@ -36,6 +36,7 @@ export async function analyzeIssues(
     const text = data.candidates[0].content.parts[0].text;
     return JSON.parse(text) as IssueSuggestion[];
   } catch (error) {
+    console.error("[analyzeIssues] Failed to parse Gemini response:", error);
     return [];
   }
 }

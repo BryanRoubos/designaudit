@@ -34,8 +34,8 @@ export async function audit(url: string): Promise<AuditResult> {
       });
     });
 
-    const issues = (axeResults as any).violations.flatMap((violation) =>
-      violation.nodes.slice(0, 3).map((node) => ({
+    const issues = (axeResults as any).violations.flatMap((violation: any) =>
+      violation.nodes.slice(0, 3).map((node: any) => ({
         rule: violation.id,
         severity:
           violation.impact === "critical" || violation.impact === "serious"
@@ -49,17 +49,19 @@ export async function audit(url: string): Promise<AuditResult> {
     );
 
     const criticalCount = issues.filter(
-      (i) => i.severity === "critical",
+      (i: any) => i.severity === "critical",
     ).length;
-    const warningCount = issues.filter((i) => i.severity === "warning").length;
-    const infoCount = issues.filter((i) => i.severity === "info").length;
+    const warningCount = issues.filter(
+      (i: any) => i.severity === "warning",
+    ).length;
+    const infoCount = issues.filter((i: any) => i.severity === "info").length;
 
     const accessibilityScore = Math.round(
       Math.max(0, 100 - criticalCount * 8 - warningCount * 2 - infoCount * 0.5),
     );
 
     const contrastCount = issues.filter(
-      (i) => i.rule === "color-contrast",
+      (i: any) => i.rule === "color-contrast",
     ).length;
     const contrastScore = Math.round(Math.max(0, 100 - contrastCount * 12));
 
@@ -91,7 +93,7 @@ export async function audit(url: string): Promise<AuditResult> {
       .filter((ref: any) => (ref.weight ?? 0) > 0)
       .map((ref: any) => ref.id);
 
-    const axeRules = new Set(issues.map((i) => i.rule));
+    const axeRules = new Set(issues.map((i: any) => i.rule));
 
     const lighthouseIssues = auditRefs
       .map((id: string) => lhr?.audits?.[id])
@@ -118,7 +120,7 @@ export async function audit(url: string): Promise<AuditResult> {
     return {
       url,
       screenshot,
-      issues: [...issues, ...lighthouseIssues].sort((a, b) => {
+      issues: [...issues, ...lighthouseIssues].sort((a: any, b: any) => {
         const order: Record<string, number> = {
           critical: 0,
           warning: 1,

@@ -9,7 +9,17 @@ export function Header() {
       >
         DesignAudit
       </Link>
-      <span className="text-[13px] text-zinc-400">by WebSneller</span>
+      <span className="text-[13px] text-zinc-400">
+        by{" "}
+        <a
+          href="https://www.linkedin.com/in/bryan-roubos/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
+        >
+          Bryan Roubos
+        </a>
+      </span>
     </nav>
   );
 }

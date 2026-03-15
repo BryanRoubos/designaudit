@@ -22,7 +22,7 @@ export default function Home() {
     "Generating fix suggestions...",
   ];
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!values.url) {
@@ -32,7 +32,7 @@ export default function Home() {
 
     setLoading(true);
     setStep(0);
-    let interval: ReturnType<typeof setInterval>;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
     try {
       interval = setInterval(() => {
@@ -63,13 +63,13 @@ export default function Home() {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
       setLoading(false);
       setStep(0);
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues({
       ...values,
