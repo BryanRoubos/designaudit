@@ -115,11 +115,12 @@ export default async function ResultsPage({
                   className="text-sm text-zinc-700 leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html: (suggestion?.suggestion ?? issue.detail)
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
                       .replace(
                         /\[([^\]]+)\]\(([^)]+)\)/g,
                         '<a href="$2" target="_blank" class="text-zinc-500 underline">$1</a>',
-                      )
-                      .replace(/<(?!a\b|\/a)[^>]+>/gi, ""),
+                      ),
                   }}
                 />
               </div>
