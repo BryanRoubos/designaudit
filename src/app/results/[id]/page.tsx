@@ -79,9 +79,7 @@ export default async function ResultsPage({
         <h2 className="text-lg font-semibold mb-4">Issues</h2>
         <div className="flex flex-col gap-4">
           {audit.issues.map((issue, i) => {
-            const suggestion = audit.suggestions.find(
-              (s) => s.rule === issue.rule && s.element === issue.element,
-            );
+            const suggestion = audit.suggestions[i];
             const borderColor =
               issue.severity === "critical"
                 ? "border-red-200"
