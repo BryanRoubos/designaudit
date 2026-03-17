@@ -79,14 +79,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <section className="max-w-xl mx-auto text-center">
-        <h1 className="text-5xl font-bold text-zinc-900 mb-3 leading-tight">
+      <section className="w-full max-w-2xl mx-auto text-center">
+        <h1 className="text-5xl font-bold text-zinc-900 mb-3 leading-tight whitespace-nowrap">
           Is your website losing users?
         </h1>
         <p className="text-zinc-500 mb-8 text-base leading-relaxed">
           Scan any URL for accessibility failures, performance issues, and SEO
-          gaps. Get a scored report with plain-English fixes in under 30
-          seconds.
+          gaps.
+          <br />
+          Get a scored report with plain-English fixes in under 30 seconds.
         </p>
 
         <form onSubmit={handleSubmit} className="flex gap-2 mb-3">
