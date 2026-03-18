@@ -30,33 +30,45 @@ export default async function ResultsPage({
 
         {/* scores card */}
         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm mb-8">
-          <div
-            className="text-5xl font-bold mb-1 justify-center flex"
-            style={{
-              color:
-                audit.scores.overall <= 50
-                  ? "#ef4444"
-                  : audit.scores.overall <= 79
-                    ? "#f59e0b"
-                    : "#22c55e",
-            }}
-          >
-            {audit.scores.overall}
+          {/* Header Section */}
+          <div className="flex flex-col items-center mb-6">
+            <div
+              className="text-5xl font-bold mb-1"
+              style={{
+                color:
+                  audit.scores.overall <= 50
+                    ? "#ef4444"
+                    : audit.scores.overall <= 79
+                      ? "#f59e0b"
+                      : "#22c55e",
+              }}
+            >
+              {audit.scores.overall}
+            </div>
+            <div className="text-sm text-zinc-500">Overall score</div>
           </div>
-          <div className="text-sm text-zinc-500 mb-6 justify-center flex">
-            Overall score
+
+          {/* Summary Section*/}
+          <div className="px-2 mb-8 text-center">
+            <p className="text-zinc-600 leading-relaxed text-sm md:text-base mx-auto max-w-2xl">
+              {audit.summary}
+            </p>
           </div>
-          {(
-            [
-              "accessibility",
-              "contrast",
-              "performance",
-              "seo",
-              "typography",
-            ] as const
-          ).map((key) => (
-            <LoadingBar key={key} label={key} score={audit.scores[key]} />
-          ))}
+
+          {/* Loading Bars */}
+          <div className="space-y-4">
+            {(
+              [
+                "accessibility",
+                "contrast",
+                "performance",
+                "seo",
+                "typography",
+              ] as const
+            ).map((key) => (
+              <LoadingBar key={key} label={key} score={audit.scores[key]} />
+            ))}
+          </div>
         </div>
 
         {/* screenshot */}

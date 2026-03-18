@@ -29,8 +29,9 @@ export async function POST(req: NextRequest) {
 
     const result = await audit(url);
 
-    const suggestions = await analyzeIssues(result.issues);
+    const { suggestions, summary } = await analyzeIssues(result.issues);
     result.suggestions = suggestions;
+    result.summary = summary;
 
     const { data, error } = await getSupabase()
       .from("audits")
