@@ -6,9 +6,13 @@ Paste in a URL. Get scores, a screenshot, and plain-English fixes you can actual
 
 ---
 
+## Demo
+<img width="1920" height="3829" alt="screencapture-designaudit-production-up-railway-app-results-d35afd1a-5a41-4348-9233-038188cb447d-2026-03-25-16_44_52" src="https://github.com/user-attachments/assets/3b31fbaf-8f16-4f3b-98fc-c8c1fd1ea50a" />
+
+
 ## Why I built this
 
-I used to run [websneller.nl](https://www.websneller.nl), a web audit and fix service. The core challenge: how do you quickly show a potential client that their site has real problems worth fixing?
+I used to run websneller.nl, a web audit and fix service. The core challenge: how do you quickly show a potential client that their site has real problems worth fixing?
 
 I needed a tool that could:
 - Generate **my own scores** across accessibility, performance, and SEO
