@@ -4,8 +4,6 @@
 
 Paste in a URL. Get scores, a screenshot, and plain-English fixes you can actually act on.
 
----
-
 ## Demo
 <img width="1920" height="3829" alt="screencapture-designaudit-production-up-railway-app-results-d35afd1a-5a41-4348-9233-038188cb447d-2026-03-25-16_44_52" src="https://github.com/user-attachments/assets/3b31fbaf-8f16-4f3b-98fc-c8c1fd1ea50a" />
 
